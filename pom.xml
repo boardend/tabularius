@@ -1,0 +1,233 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.eclipse.scout.boot</groupId>
+		<artifactId>scout-boot</artifactId>
+		<version>6.1.0-SNAPSHOT</version>
+	</parent>
+
+	<groupId>org.eclipse.scout.boot.tabularius</groupId>
+	<artifactId>tabularius</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.eclipse.scout.boot</groupId>
+			<artifactId>scout-boot-ui</artifactId>
+			<version>${scout.boot.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.scout.boot</groupId>
+			<artifactId>scout-boot-ui-dev</artifactId>
+			<version>${scout.boot.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.scout.rt</groupId>
+			<artifactId>org.eclipse.scout.rt.svg.client</artifactId>
+			<version>${scout.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>xalan</groupId>
+					<artifactId>xalan</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.eclipse.scout.rt</groupId>
+			<artifactId>org.eclipse.scout.rt.svg.ui.html</artifactId>
+			<version>${scout.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>batik</groupId>
+			<artifactId>batik-rasterizer</artifactId>
+			<version>1.6</version>
+		</dependency>
+		<dependency>
+			<groupId>xerces</groupId>
+			<artifactId>xercesImpl</artifactId>
+			<version>2.11.0</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>com.github.braeunlich</groupId>
+			<artifactId>anagnostes</artifactId>
+			<version>master</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-simple</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+			<resource>
+				<directory>src/main/js</directory>
+			</resource>
+		</resources>
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<compilerId>eclipse</compilerId>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.codehaus.plexus</groupId>
+						<artifactId>plexus-compiler-eclipse</artifactId>
+						<version>2.8.1</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>generate-numbers</id>
+						<phase>generate-sources</phase>
+						<configuration>
+							<tasks>
+								<taskdef resource="net/sf/antcontrib/antcontrib.properties"
+									classpathref="maven.plugin.classpath" />
+								<if>
+									<and>
+										<available file="src/main/resources/WebContent/res/numbers" />
+										<length length="0" when="greater">
+											<fileset dir="src/main/resources/WebContent/res/numbers"
+												followsymlinks="false" />
+										</length>
+									</and>
+									<then>
+										<echo message="Skipping 'generate-numbers'" />
+									</then>
+									<else>
+										<get
+											src="https://codeload.github.com/kensanata/numbers/zip/master"
+											dest="target/number.zip" />
+										<unzip src="target/number.zip" dest="target" />
+										<copy todir="src/main/resources/WebContent/res/numbers">
+											<fileset dir="target/numbers-master" includes="????_????/**" />
+										</copy>
+										<delete>
+											<fileset dir="src/main/resources/WebContent/res/numbers"
+												includes="**/scan*" />
+										</delete>
+									</else>
+								</if>
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>ant-contrib</groupId>
+						<artifactId>ant-contrib</artifactId>
+						<version>20020829</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<excludeDevtools>true</excludeDevtools>
+					<excludeArtifactIds>scout-boot-ui-dev</excludeArtifactIds>
+				</configuration>
+			</plugin>
+		</plugins>
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.apache.maven.plugins
+										</groupId>
+										<artifactId>
+											maven-antrun-plugin
+										</artifactId>
+										<versionRange>
+											[1.8,)
+										</versionRange>
+										<goals>
+											<goal>run</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.apache.maven.plugins
+										</groupId>
+										<artifactId>
+											maven-compiler-plugin
+										</artifactId>
+										<versionRange>
+											[3.1,)
+										</versionRange>
+										<goals>
+											<goal>compile</goal>
+											<goal>testCompile</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+	<repositories>
+		<repository>
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
+		</repository>
+	</repositories>
+
+</project>
