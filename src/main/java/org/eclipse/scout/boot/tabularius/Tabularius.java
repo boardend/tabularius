@@ -11,7 +11,12 @@ import org.springframework.context.annotation.Import;
 public class Tabularius {
 
 	public static void main(final String[] args) {
+		applySystemProperties();
 		SpringApplication.run(Tabularius.class, args);
+	}
+
+	protected static void applySystemProperties() {
+		System.setProperty("spring.devtools.restart.enabled", "false");
 	}
 
 }
