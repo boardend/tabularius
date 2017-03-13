@@ -87,6 +87,6 @@ public class NumbersFileWalker extends SimpleFileVisitor<Path> {
 	}
 
 	public String minimizePath(Path path) {
-		return path.toFile().getAbsolutePath().replace(basePath, "");
+		return path.toFile().getAbsolutePath().replace(basePath, "").replace("\\", "/");
 	}
 }
