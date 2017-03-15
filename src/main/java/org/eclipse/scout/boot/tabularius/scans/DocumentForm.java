@@ -189,6 +189,7 @@ public class DocumentForm extends AbstractForm {
 						protected void execInitField() {
 							setLabelVisible(false);
 							setMultilineText(true);
+							setMaxLength(1000000);
 							
 							try {
 								ByteArrayOutputStream out = new ByteArrayOutputStream();
