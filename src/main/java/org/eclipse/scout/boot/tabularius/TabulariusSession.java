@@ -2,7 +2,7 @@ package org.eclipse.scout.boot.tabularius;
 
 import java.util.UUID;
 
-import org.eclipse.scout.boot.ui.AbstractSpringBootClientSession;
+import org.eclipse.scout.boot.ui.scout.AbstractSpringBootClientSession;
 import org.eclipse.scout.rt.client.session.ClientSessionProvider;
 import org.eclipse.scout.rt.platform.BEANS;
 import org.eclipse.scout.rt.platform.Bean;

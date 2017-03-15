@@ -8,8 +8,8 @@ import javax.inject.Inject;
 
 import org.eclipse.scout.boot.tabularius.numbers.model.Contributor;
 import org.eclipse.scout.boot.tabularius.numbers.util.NumbersFileWalker;
-import org.eclipse.scout.boot.ui.AbstractScoutBootDesktop;
-import org.eclipse.scout.boot.ui.fonts.FontAwesomeIcons;
+import org.eclipse.scout.boot.ui.commons.fonts.FontAwesomeIcons;
+import org.eclipse.scout.boot.ui.scout.AbstractScoutBootDesktop;
 import org.eclipse.scout.rt.client.ui.desktop.AbstractDesktopExtension;
 import org.eclipse.scout.rt.client.ui.desktop.outline.AbstractOutlineViewButton;
 import org.eclipse.scout.rt.client.ui.desktop.outline.IOutline;
