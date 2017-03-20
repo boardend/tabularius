@@ -2,6 +2,7 @@ package org.eclipse.scout.boot.tabularius;
 
 import java.util.List;
 
+import org.eclipse.scout.boot.tabularius.anagnostes.AnagnostesPage;
 import org.eclipse.scout.boot.tabularius.numbers.NumbersPage;
 import org.eclipse.scout.boot.tabularius.scans.DocumentPage;
 import org.eclipse.scout.boot.ui.commons.fonts.FontAwesomeIcons;
@@ -27,5 +28,6 @@ public class TabulariusOutline extends AbstractOutline {
 	protected void execCreateChildPages(List<IPage<?>> pageList) {
 		pageList.add(BEANS.get(DocumentPage.class));
 		pageList.add(BEANS.get(NumbersPage.class));
+		pageList.add(BEANS.get(AnagnostesPage.class));
 	}
 }
