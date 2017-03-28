@@ -1,4 +1,4 @@
-package org.eclipse.scout.boot.tabularius.anagnostes;
+package org.eclipse.scout.boot.tabularius.anagnostes.util;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -10,33 +10,38 @@ import java.net.URL;
 import javax.imageio.ImageIO;
 
 import org.apache.commons.io.IOUtils;
+import org.eclipse.scout.boot.tabularius.anagnostes.model.Eval;
 import org.eclipse.scout.rt.platform.ApplicationScoped;
 import org.springframework.core.io.ClassPathResource;
 
-import com.bsiag.anagnostes.LeNetMnist;
-import com.bsiag.anagnostes.NumbersEvalResult;
+import com.bsiag.anagnostes.NeuralNetwork;
+import com.bsiag.anagnostes.Output;
 
 @ApplicationScoped
 public class LeNetMnistAccessor {
-	protected final String MODEL_FILE_NAME = "model.zip";
+	protected final String MODEL_FILE_NAME = "model_numbers.zip";
 
-	protected LeNetMnist m_net;
+	protected NeuralNetwork m_net;
 
 	public LeNetMnistAccessor() {
-		m_net = new LeNetMnist();
+		m_net = new NeuralNetwork();
 		try {
 			final File tempFile = File.createTempFile(MODEL_FILE_NAME, ".tmp");
 			tempFile.deleteOnExit();
 			FileOutputStream out = new FileOutputStream(tempFile);
 			IOUtils.copy(new ClassPathResource(MODEL_FILE_NAME).getInputStream(), out);
-			m_net.loadModel(tempFile);
+			m_net = new NeuralNetwork.Builder().fromFile(tempFile);
 		} catch (IOException e) {
 			throw new IllegalStateException(e);
 		}
 	}
 
-	public NumbersEvalResult eval(String imagePath) {
-		return m_net.eval(getImageFromFileSystem(imagePath));
+	public Eval eval(String imagePath) {
+		Output result = m_net.output(getImageFromFileSystem(imagePath));
+		Eval eval = new Eval();
+		eval.character = result.getCharacter();
+		eval.confidence = result.getConfidence();
+		return eval;
 	}
 
 	protected BufferedImage getImageFromFileSystem(String imagePath) {

@@ -11,5 +11,4 @@ public class ScannedNumber implements Serializable {
 	
 	public short digit;
 	public short no;
-	
 }

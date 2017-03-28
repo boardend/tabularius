@@ -7,6 +7,8 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 import org.eclipse.scout.boot.tabularius.TabulariusDesktop;
+import org.eclipse.scout.boot.tabularius.anagnostes.model.Eval;
+import org.eclipse.scout.boot.tabularius.anagnostes.util.LeNetMnistAccessor;
 import org.eclipse.scout.boot.tabularius.numbers.model.Contributor;
 import org.eclipse.scout.boot.tabularius.numbers.model.ScannedNumber;
 import org.eclipse.scout.rt.client.ui.form.AbstractForm;
@@ -14,8 +16,6 @@ import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractButton;
 import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
 import org.eclipse.scout.rt.client.ui.form.fields.stringfield.AbstractStringField;
 import org.eclipse.scout.rt.platform.BEANS;
-
-import com.bsiag.anagnostes.NumbersEvalResult;
 
 public class AnagnostesForm extends AbstractForm {
 
@@ -31,13 +31,13 @@ public class AnagnostesForm extends AbstractForm {
 			
 			for (int i = 0; i < 10; i++) {
 				int n = ThreadLocalRandom.current().nextInt(0, 10);
-				NumbersEvalResult number = getRandomNumber(contributor, n);
+				Eval number = getRandomNumber(contributor, n);
 				
 				sb.append(n);
 				sb.append(" / ");
-				sb.append(number.getCharacter());
+				sb.append(number.character);
 				sb.append(" (");
-				sb.append(new DecimalFormat("0.00").format(number.getConfidence()));
+				sb.append(new DecimalFormat("0.00").format(number.confidence));
 				sb.append(")");
 				sb.append("\n");
 			}
@@ -51,7 +51,7 @@ public class AnagnostesForm extends AbstractForm {
 			return desktop.getContributors().toArray(new Contributor[desktop.getContributors().size()])[i];
 		}
 		
-		protected NumbersEvalResult getRandomNumber(Contributor contributor, int digit) {
+		protected Eval getRandomNumber(Contributor contributor, int digit) {
 			final Set<ScannedNumber> possibleNumbers = contributor.getNumbers().stream()
 					.filter(n -> n.digit == digit)
 					.collect(Collectors.toSet());

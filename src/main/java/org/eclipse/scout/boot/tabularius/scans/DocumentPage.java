@@ -6,7 +6,7 @@ import org.eclipse.scout.rt.platform.Bean;
 
 @Bean
 public class DocumentPage extends AbstractPageWithNodes {
-	
+
 	@Override
 	protected void execInitPage() {
 		super.execInitPage();
@@ -21,5 +21,12 @@ public class DocumentPage extends AbstractPageWithNodes {
 	@Override
 	protected String getConfiguredTitle() {
 		return "Document";
+	}
+
+	@Override
+	protected void execInitDetailForm() {
+		if(getDetailForm() instanceof DocumentForm) {
+			((DocumentForm) getDetailForm()).execInitForm();
+		}
 	}
 }
