@@ -18,5 +18,4 @@ public class Tabularius {
 	protected static void applySystemProperties() {
 		System.setProperty("spring.devtools.restart.enabled", "false");
 	}
-
 }
