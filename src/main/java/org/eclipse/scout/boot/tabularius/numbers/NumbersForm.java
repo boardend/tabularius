@@ -418,7 +418,7 @@ public class NumbersForm extends AbstractForm {
 								.filter(n -> digitTableField.filter(n)).map(n -> {
 									ITableRow row = getTable().createRow();
 									row.setCellValue(0, n);
-									row.setCellValue(1, HTML.div(HTML.span(n.path), HTML.br(), HTML.span("Test")));
+									row.setCellValue(1, HTML.div(HTML.span(n.path), HTML.br(), HTML.span("")));
 									row.setCellValue(2, HTML.img("/res/numbers" + n.path)
 											.addAttribute("style", "width:25px;height:25px").toHtml());
 									return row;

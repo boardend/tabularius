@@ -26,7 +26,7 @@ public class Document implements Serializable {
 		Map<String, String> fields = new HashMap<>();
 		fields.put("Credit card", "#### #### #### ####");
 		fields.put("Telephone", "+## ## ### ## ##");
-		fields.put("AHV number", "###.####.####.##");
+		fields.put("Date of birth", "##.##.####");
 
 		FIELD_SPECS = fields.entrySet().stream().map(e -> {
 			FieldSpec spec = new FieldSpec();

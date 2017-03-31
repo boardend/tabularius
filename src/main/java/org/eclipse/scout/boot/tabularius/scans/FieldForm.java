@@ -85,6 +85,7 @@ public class FieldForm extends AbstractForm {
 					setGridColumnCountHint(1);
 				}
 
+				@Order(10)
 				public class CharacterBox extends AbstractSequenceBox {
 
 					@Override
@@ -106,7 +107,48 @@ public class FieldForm extends AbstractForm {
 							stringField.setValue(String.valueOf(field.evaluation.eval.get(n).character));
 							stringField.setEnabled(false);
 							stringField.setFocusable(false);
+							stringField.setLabelVisible(false);
+							stringField.setStatusVisible(false);
+							stringField.setOrder(counter.incrementAndGet());
+							fields.addLast(stringField);
+						});
 
+						super.injectFieldsInternal(fields);
+					}
+				}
+				
+				@Order(20)
+				public class ConfidenceBox extends AbstractSequenceBox {
+
+					@Override
+					protected void execInitField() {
+						setLabelVisible(false);
+						setAutoCheckFromTo(false);
+					}
+
+					@Override
+					protected void injectFieldsInternal(OrderedCollection<IFormField> fields) {
+						AtomicInteger counter = new AtomicInteger(0);
+						field.input.numbers.forEach(n -> {
+							AbstractStringField stringField = new AbstractStringField() {
+								@Override
+								public String classId() {
+									return UUID.randomUUID().toString();
+								}
+							};
+							double conf = field.evaluation.eval.get(n).confidence;
+							stringField.setValue(String.valueOf(conf));
+							
+							int g = (int) ((field.evaluation.eval.get(n).confidence-0.5) * 510.0);
+							int r = 255 -g;
+							
+							String bg = String.format("%02x%02x00", r, g).toUpperCase();
+							System.out.println(bg + " " + field.evaluation.eval.get(n).confidence + " r: " + r + " g:" + g);
+							stringField.setBackgroundColor(bg);
+							
+							stringField.setEnabled(false);
+							stringField.setFocusable(false);
+							
 							stringField.setLabelVisible(false);
 							stringField.setStatusVisible(false);
 							stringField.setOrder(counter.incrementAndGet());
